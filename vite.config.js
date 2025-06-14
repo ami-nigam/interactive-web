@@ -1,7 +1,7 @@
-﻿import { defineConfig } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/interactive-web/'
+  // base: '/interactive-web/' // <-- Commented out for local development
 })
