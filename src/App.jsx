@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import ParticleBackgroundWrapper from './ParticleBackgroundWrapper';
+import { Canvas } from '@react-three/fiber';
+import Background from './components/Background';
 import Lenis from '@studio-freight/lenis';
+import { Leva } from 'leva'
+import { OrbitControls } from '@react-three/drei'
+
+
 
 
 
@@ -40,7 +45,7 @@ const fontWeights = {
 
 // Colors
 const colors = {
-  background: 'rgba(255, 255, 255, 0.48)',
+  background: 'rgba(255, 255, 255, 0)',
   primary: '#000',
   secondary: '#CBCBCB',
   accent: '#e10098',
@@ -897,35 +902,32 @@ export default function App() {
   }, []);
 
   return (
-    <ParticleBackgroundWrapper>
-      
-      <LinkedInButton />
-      <main style={{...componentStyles.main, background: 'transparent'}}>
-        <style>
-          {`
-            ::selection {
-              background: ${colors.accent};
-              color: ${colors.background};
-            }
-            ::-moz-selection {
-              background: ${colors.accent};
-              color: ${colors.background};
-            }
-            * {
-              cursor: auto !important;
-            }
-            a:hover, button:hover {
-              cursor: pointer !important;
-            }
-          `}
-        </style>
-        
+    <>
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: -1
+      }}>
+        <Leva />
+        <Canvas camera={{ position: [3, 0, 8], fov: 45 }}>
+          <OrbitControls target={[3, 0, 0]} enableZoom={false} enablePan={false} enableRotate={false} />
+          <Background />
+        </Canvas>
+      </div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         <HeroSection />
         <ExpertiseSection />
         <PressSection />
-        <section style={{ height: '100vh', background: 'transparent' }}></section>
-      </main>
-      <CopyrightFooter />
-    </ParticleBackgroundWrapper>
+        <CopyrightFooter />
+        <LinkedInButton />
+      </motion.div>
+    </>
   );
 }
