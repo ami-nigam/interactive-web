@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ParticleBackgroundWrapper from './ParticleBackgroundWrapper';
+import Lenis from '@studio-freight/lenis';
 
 
 
@@ -426,8 +427,8 @@ const componentStyles = {
   },
   
   expertiseIcon: {
-    width: '300x',
-    height: '300px',
+    width: '200x',
+    height: '200px',
     objectFit: 'contain',
     marginBottom: '0.5rem'
   },
@@ -567,6 +568,8 @@ const DramatizedText = ({
                       style={{
                         ...emphasizedStyle,
                         color: colors.accent,
+                        fontWeight: fontWeights.black,
+                        fontStyle: 'italic',
                         textDecoration: 'none'
                       }}
                     >
@@ -607,7 +610,8 @@ const DramatizedText = ({
                       style={{
                         ...emphasizedStyle,
                         color: colors.accent,
-                        textDecoration: 'none'
+                        fontWeight: fontWeights.bold,
+                        textDecoration: 'underline'
                       }}
                     >
                       {part.text}
@@ -805,22 +809,97 @@ const PressSection = () => (
   </section>
 );
 
+const linkedInUrl = "https://www.linkedin.com/in/ami-nigam-4325256a/";
+
+function CopyrightFooter() {
+  return (
+    <footer style={{
+      position: 'fixed',
+      left: '50%',
+      bottom: '2vh',
+      transform: 'translateX(-50%)',
+      color: '#888',
+      fontSize: '1rem',
+      zIndex: 100,
+      background: 'rgba(255,255,255,0.7)',
+      borderRadius: '8px',
+      padding: '0.3em 1.2em',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+      fontFamily: fontFaces.primary,
+      fontSize: fontSizes.extrasmall,
+      fontWeight: fontWeights.ultralight
+    }}>
+      © {new Date().getFullYear()} Ami Nigam. All rights reserved.
+    </footer>
+  );
+}
+
+function LinkedInButton() {
+  return (
+    <a
+      href={linkedInUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        position: 'fixed',
+        top: '2vh',
+        right: '2vw',
+        zIndex: 100,
+        background: '#e10098',
+        color: '#fff',
+        borderRadius: '999px',
+        padding: '0.7em 1.5em 0.7em 2.5em',
+        fontWeight: 600,
+        fontFamily: fontFaces.primary,
+        fontSize: fontSizes.extrasmall,
+        fontWeight: fontWeights.light,
+        textDecoration: 'none',
+        boxShadow: '0 2px 12px rgba(225,0,152,0.08)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.7em',
+        transition: 'background 0.2s',
+      }}
+      onMouseEnter={e => e.currentTarget.style.background = '#b80077'}
+      onMouseLeave={e => e.currentTarget.style.background = '#e10098'}
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position:'absolute',left:'0.7em'}}><rect width="24" height="24" rx="12" fill="#fff"/><path d="M17.5 17.5H15.25V14.25C15.25 13.42 15.23 12.34 14.09 12.34C12.94 12.34 12.77 13.27 12.77 14.19V17.5H10.5V10.5H12.64V11.44H12.67C12.97 10.89 13.66 10.3 14.68 10.3C16.81 10.3 17.5 11.66 17.5 13.36V17.5ZM8.25 9.56C7.56 9.56 7 9 7 8.31C7 7.62 7.56 7.06 8.25 7.06C8.94 7.06 9.5 7.62 9.5 8.31C9.5 9 8.94 9.56 8.25 9.56ZM9.38 17.5H7.12V10.5H9.38V17.5ZM18.25 4.5H5.75C5.34 4.5 5 4.84 5 5.25V18.75C5 19.16 5.34 19.5 5.75 19.5H18.25C18.66 19.5 19 19.16 19 18.75V5.25C19 4.84 18.66 4.5 18.25 4.5Z" fill="#e10098"/></svg>
+      Contact me on LinkedIn
+    </a>
+  );
+}
+
 // ===========================================
 // MAIN APP COMPONENT
 // ===========================================
 export default function App() {
   useEffect(() => {
-    // Smooth scrolling would be initialized here
-    // const lenis = new Lenis();
-    // function raf(time) {
-    //   lenis.raf(time);
-    //   requestAnimationFrame(raf);
-    // }
-    // requestAnimationFrame(raf);
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   return (
     <ParticleBackgroundWrapper>
+      
+      <LinkedInButton />
       <main style={{...componentStyles.main, background: 'transparent'}}>
         <style>
           {`
@@ -832,18 +911,21 @@ export default function App() {
               background: ${colors.accent};
               color: ${colors.background};
             }
+            * {
+              cursor: auto !important;
+            }
+            a:hover, button:hover {
+              cursor: pointer !important;
+            }
           `}
         </style>
         
         <HeroSection />
-
         <ExpertiseSection />
-        
         <PressSection />
-
         <section style={{ height: '100vh', background: 'transparent' }}></section>
       </main>
+      <CopyrightFooter />
     </ParticleBackgroundWrapper>
-
   );
 }
