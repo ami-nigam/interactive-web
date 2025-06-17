@@ -8,8 +8,6 @@ import { OrbitControls } from '@react-three/drei'
 
 
 
-
-
 // ===========================================
 // MODULAR TYPOGRAPHY SYSTEM - Mix and Match
 // ===========================================
@@ -909,7 +907,10 @@ export default function App() {
         left: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: -1
+        zIndex: -1,
+        pointerEvents: 'none' // Add this so scrolling works over the canvas
+
+
       }}>
         <Leva />
         <Canvas camera={{ position: [3, 0, 8], fov: 45 }}>
